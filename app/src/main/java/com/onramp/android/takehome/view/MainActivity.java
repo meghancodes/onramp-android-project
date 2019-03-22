@@ -10,6 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.onramp.android.takehome.R;
+import com.onramp.android.takehome.model.AccessToken;
+import com.onramp.android.takehome.model.OAuthAPI;
+import com.onramp.android.takehome.model.OAuthAPIManager;
+
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        OAuthAPIManager apiManager = new OAuthAPIManager();
+        apiManager.getToken();
     }
 
     @Override
