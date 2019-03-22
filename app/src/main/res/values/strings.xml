@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Onramp Android Take Home</string>
     <string name="action_settings">Settings</string>
+    <string name="app_title">Furry Angel Finder</string>
+    <string name="featured_pet">featured_pet</string>
+    <string name="zip_code_hint">enter zip code</string>
+    <string name="search">Search</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="additional_details">Additional Details</string>
 </resources>
