@@ -31,15 +31,20 @@ public class OAuthAPIManager {
         call.enqueue(new Callback<AccessToken>() {
             @Override
             public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-                Log.d("Token Type:", response.body().getTokenType());
+                /*Log.d("Token Type:", response.body().getTokenType());
                 Log.d("Expires In: ", Integer.toString(response.body().getExpiresIn()));
-                Log.d("Access Token:", response.body().getAccessToken());
+                Log.d("Access Token:", response.body().getAccessToken());*/
+
+                //Get Pet Types data
+                PetDataManager petDataManager = new PetDataManager(response.body().getAccessToken());
+                petDataManager.getPetTypes();
             }
             @Override
             public void onFailure(Call<AccessToken> call, Throwable t) {
                 Log.d("FAIL: ", "That call didn't work");
             }
         });
+
     }
 
 
