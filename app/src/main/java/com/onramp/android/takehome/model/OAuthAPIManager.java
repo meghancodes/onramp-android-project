@@ -16,6 +16,7 @@ public class OAuthAPIManager {
     private static final String CLIENT_SECRET = "ReQfJuXwOxqt0n3C1Tv5BpfgWDVBPrOFgrTO5phS";
 
     private OAuthAPI oAuthAPI;
+    private String token;
 
     public OAuthAPIManager(){
         oAuthAPI = (new Retrofit.Builder()
@@ -25,6 +26,8 @@ public class OAuthAPIManager {
                 .create(OAuthAPI.class);
     }
 
+
+
     public void getToken(){
 
         Call<AccessToken> call = oAuthAPI.getAccessToken(GRANT_TYPE, CLIENT_ID, CLIENT_SECRET );
@@ -32,12 +35,13 @@ public class OAuthAPIManager {
             @Override
             public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                 /*Log.d("Token Type:", response.body().getTokenType());
-                Log.d("Expires In: ", Integer.toString(response.body().getExpiresIn()));
-                Log.d("Access Token:", response.body().getAccessToken());*/
+                Log.d("Expires In: ", Integer.toString(response.body().getExpiresIn()));*/
+                //Log.d("Access Token:", response.body().getAccessToken());
 
-                //Get Pet Types data
-                PetDataManager petDataManager = new PetDataManager(response.body().getAccessToken());
-                petDataManager.getPetTypes();
+                //store access token
+                token = response.body().getAccessToken();
+                Log.d("Successful: ", "Got response");
+
             }
             @Override
             public void onFailure(Call<AccessToken> call, Throwable t) {
@@ -45,6 +49,10 @@ public class OAuthAPIManager {
             }
         });
 
+    }
+
+    public String returnToken() {
+        return token;
     }
 
 

@@ -13,6 +13,10 @@ import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.AccessToken;
 import com.onramp.android.takehome.model.OAuthAPI;
 import com.onramp.android.takehome.model.OAuthAPIManager;
+import com.onramp.android.takehome.model.PetDataManager;
+import com.onramp.android.takehome.viewmodel.AppViewModel;
+
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -34,8 +38,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        OAuthAPIManager apiManager = new OAuthAPIManager();
-        apiManager.getToken();
+        PetDataManager test = new PetDataManager();
+        test.getPetTypes();
+//        OAuthAPIManager test = new OAuthAPIManager();
+//        test.getToken();
+        //AppViewModel appViewModel = new AppViewModel();
+        //List<String> test = appViewModel.getPetTypeNames();
     }
 
     @Override
