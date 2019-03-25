@@ -1,26 +1,41 @@
 package com.onramp.android.takehome.view;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.onramp.android.takehome.R;
-import com.onramp.android.takehome.model.AccessToken;
-import com.onramp.android.takehome.model.OAuthAPI;
-import com.onramp.android.takehome.model.OAuthAPIManager;
-import com.onramp.android.takehome.model.PetDataManager;
-import com.onramp.android.takehome.viewmodel.AppViewModel;
+import com.onramp.android.takehome.model.PetTypes;
+import com.onramp.android.takehome.viewmodel.PetDataViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-
 public class MainActivity extends AppCompatActivity {
+
+    private Spinner spinnerPet;
+    private Spinner spinnerBreed;
+    private Spinner spinnerSex;
+    private Spinner spinnerSize;
+    private Spinner spinnerAge;
+    private Spinner spinnerGoodWith;
+    private Spinner spinnerSpecial;
+    private EditText etZipCode;
+    private Button btnSearch;
+    private PetDataViewModel pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +53,68 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        PetDataManager test = new PetDataManager();
-        test.getPetTypes();
-//        OAuthAPIManager test = new OAuthAPIManager();
-//        test.getToken();
-        //AppViewModel appViewModel = new AppViewModel();
-        //List<String> test = appViewModel.getPetTypeNames();
+        //link variables to view components
+        spinnerPet = findViewById(R.id.spinnerPet);
+        spinnerBreed = findViewById(R.id.spinnerBreed);
+        spinnerSex = findViewById(R.id.spinnerSex);
+        spinnerSize = findViewById(R.id.spinnerSize);
+        spinnerAge = findViewById(R.id.spinnerAge);
+        spinnerGoodWith = findViewById(R.id.spinnerGoodWith);
+        spinnerSpecial = findViewById(R.id.spinnerSpecial);
+        etZipCode = findViewById(R.id.etZipCode);
+        btnSearch = findViewById(R.id.btnSearch);
+
+        //hide spinners that won't be filled in upon init
+        spinnerBreed.setVisibility(View.GONE);
+        spinnerSex.setVisibility(View.GONE);
+        spinnerSize.setVisibility(View.GONE);
+        spinnerAge.setVisibility(View.GONE);
+        spinnerGoodWith.setVisibility(View.GONE);
+        spinnerSpecial.setVisibility(View.GONE);
+        etZipCode.setVisibility(View.GONE);
+
+        //populate spinner pet
+        initSpinner();
+
+
+
+//        List<String> pn = new ArrayList<>();
+//        pn.add("Select a Pet Type");
+//        pn.add("Dog");
+//        pn.add("Cat");
+//        pn.add("Elephant");
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+//                        android.R.layout.simple_spinner_item, pn);
+//
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerPet.setAdapter(adapter);
+
     }
+
+    public void initSpinner(){
+        //create new instance of viewmodel
+        pd = ViewModelProviders.of(this).get(PetDataViewModel.class);
+        //List<String> typeNames = pd.getTypesList().hasObservers();
+        pd.getTypesList().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(@Nullable List<String> strings) {
+
+            }
+        });
+
+        boolean bn = pd.getTypesList().hasActiveObservers();
+        boolean obs = pd.getTypesList().hasObservers();
+        List<String> typeNames = new ArrayList<>();
+        typeNames = (List<String>) pd.getTypesList();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+                        android.R.layout.simple_spinner_item, typeNames);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPet.setAdapter(adapter);
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
