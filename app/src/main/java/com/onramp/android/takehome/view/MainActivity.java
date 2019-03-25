@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.onramp.android.takehome.R;
+import com.onramp.android.takehome.model.APIManager;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
 
 import java.util.HashMap;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        APIManager apiManager = new APIManager();
+        apiManager.getResults("Dog");
+
         //link variables to view components
         spinnerPet = (Spinner) findViewById(R.id.spinnerPet);
         spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         searchParams.put("age", selectedAge);
                     }
                 }
-                
+
                 petDataViewModel.submitSearchParams(searchParams);
             }
         });
