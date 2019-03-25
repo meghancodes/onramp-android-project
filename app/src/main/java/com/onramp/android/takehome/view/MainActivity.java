@@ -36,8 +36,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinnerGoodWith;
     private Spinner spinnerSpecial;
     private EditText etZipCode;
+    private Button btnBegin;
     private Button btnSearch;
     private PetDataViewModel pd;
+    private String selectedPetType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerGoodWith = findViewById(R.id.spinnerGoodWith);
         spinnerSpecial = findViewById(R.id.spinnerSpecial);
         etZipCode = findViewById(R.id.etZipCode);
+        btnBegin = findViewById(R.id.btnBegin);
         btnSearch = findViewById(R.id.btnSearch);
 
         //hide spinners that won't be filled in upon init
@@ -74,12 +77,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerGoodWith.setVisibility(View.GONE);
         spinnerSpecial.setVisibility(View.GONE);
         etZipCode.setVisibility(View.GONE);
+        btnSearch.setVisibility(View.GONE);
 
         //populate spinner pet
         initSpinner();
         spinnerPet.setOnItemSelectedListener(this);
 
+        btnBegin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(selectedPetType.equals("Select a pet type")){
+                    Toast.makeText(MainActivity.this, "Select a pet type from the " +
+                                    "dropdown to begin!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    spinnerBreed.setVisibility(View.VISIBLE);
+                    spinnerSex.setVisibility(View.VISIBLE);
+                    spinnerSize.setVisibility(View.VISIBLE);
+                    spinnerAge.setVisibility(View.VISIBLE);
+                    spinnerGoodWith.setVisibility(View.VISIBLE);
+                    spinnerSpecial.setVisibility(View.VISIBLE);
+                    etZipCode.setVisibility(View.VISIBLE);
+                    btnSearch.setVisibility(View.VISIBLE);
+                    btnBegin.setVisibility(View.GONE);
+                }
+            }
+        });
 
+        //Send data to search
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -105,18 +136,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerPet.setAdapter(adapter);
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        String selected = parent.getItemAtPosition(pos).toString();
-        Log.d("Test", selected);
-
-
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        selectedPetType = adapterView.getItemAtPosition(i).toString();
     }
 
-    public void onNothingSelected(AdapterView parent) {
-        // Do nothing.
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,4 +167,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         return super.onOptionsItemSelected(item);
     }
+
 }
