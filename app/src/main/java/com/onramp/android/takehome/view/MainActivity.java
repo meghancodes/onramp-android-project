@@ -6,16 +6,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -25,7 +32,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinnerAge;
     private Button btnSearch;
     private PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
-    private String selectedPetType;
+
+    private String selectedPet;
+    private String selectedGender;
+    private String selectedSize;
+    private String selectedAge;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +56,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         //link variables to view components
-        spinnerPet = findViewById(R.id.spinnerPet);
-        spinnerGender = findViewById(R.id.spinnerGender);
-        spinnerSize = findViewById(R.id.spinnerSize);
-        spinnerAge = findViewById(R.id.spinnerAge);
-        btnSearch = findViewById(R.id.btnSearch);
-
+        spinnerPet = (Spinner) findViewById(R.id.spinnerPet);
+        spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
+        spinnerSize = (Spinner) findViewById(R.id.spinnerSize);
+        spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
 
         //initialize spinners
         initSpinners();
 
-
-
-        //Send data to search
+        //Collect search queries
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                HashMap<String, String> searchParams = new HashMap<>();
 
+                if(selectedPet.equals("Select a pet")){
+                    //A pet must be selected to search
+                    Toast.makeText(MainActivity.this, "Select a pet to start!",
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    searchParams.put("animal", selectedPet);
+
+                    if(!selectedGender.equals("Select a gender")){
+                        searchParams.put("sex", selectedGender);
+                    }
+                    if(!selectedSize.equals("Select a size")){
+                        searchParams.put("size", selectedSize);
+                    }
+                    if(!selectedAge.equals("Select an age")){
+                        searchParams.put("age", selectedAge);
+                    }
+                }
+                
+                petDataViewModel.submitSearchParams(searchParams);
             }
         });
 
@@ -132,11 +162,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         switch(id){
             case R.id.spinnerPet:
-                Log.d("In spinner pet? ", "Yes");
+                selectedPet = adapterView.getItemAtPosition(i).toString();
+                break;
+
+            case R.id.spinnerGender:
+                selectedGender = adapterView.getItemAtPosition(i).toString();
+                break;
+
+            case R.id.spinnerSize:
+                selectedSize = adapterView.getItemAtPosition(i).toString();
+                break;
+
+            case R.id.spinnerAge:
+                selectedAge = adapterView.getItemAtPosition(i).toString();
                 break;
         }
-        selectedPetType = adapterView.getItemAtPosition(i).toString();
-        Log.d("Test: ", selectedPetType);
     }
 
     @Override
