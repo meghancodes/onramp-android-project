@@ -23,10 +23,10 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         super(application);
 
         this.application = application;
+        pt = new PetTypes(application);
     }
 
     public LiveData<List<String>> getTypesList(){
-        pt = new PetTypes(application);
         typeNames = pt.getPetTypeNames();
 
         return typeNames;

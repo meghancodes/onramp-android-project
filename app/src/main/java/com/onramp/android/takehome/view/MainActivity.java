@@ -12,10 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.PetTypes;
@@ -24,7 +26,7 @@ import com.onramp.android.takehome.viewmodel.PetDataViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinnerPet;
     private Spinner spinnerBreed;
@@ -75,43 +77,43 @@ public class MainActivity extends AppCompatActivity {
 
         //populate spinner pet
         initSpinner();
+        spinnerPet.setOnItemSelectedListener(this);
 
 
-
-//        List<String> pn = new ArrayList<>();
-//        pn.add("Select a Pet Type");
-//        pn.add("Dog");
-//        pn.add("Cat");
-//        pn.add("Elephant");
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-//                        android.R.layout.simple_spinner_item, pn);
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerPet.setAdapter(adapter);
 
     }
 
     public void initSpinner(){
         //create new instance of viewmodel
         pd = ViewModelProviders.of(this).get(PetDataViewModel.class);
-        //List<String> typeNames = pd.getTypesList().hasObservers();
+        getLifecycle().addObserver(pd);
         pd.getTypesList().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(@Nullable List<String> strings) {
-
+                Log.d("Test", "Test");
             }
         });
 
         boolean bn = pd.getTypesList().hasActiveObservers();
         boolean obs = pd.getTypesList().hasObservers();
         List<String> typeNames = new ArrayList<>();
-        typeNames = (List<String>) pd.getTypesList();
+        typeNames = (List<String>) pd.getTypesList().getValue();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
                         android.R.layout.simple_spinner_item, typeNames);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPet.setAdapter(adapter);
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        String selected = parent.getItemAtPosition(pos).toString();
+        Log.d("Test", selected);
+
+
+    }
+
+    public void onNothingSelected(AdapterView parent) {
+        // Do nothing.
     }
 
 

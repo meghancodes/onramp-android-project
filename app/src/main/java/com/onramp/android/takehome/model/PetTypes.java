@@ -24,7 +24,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PetTypes extends Application implements LifecycleObserver {
+public class PetTypes {
 
     private Types types;
     private Context context;
@@ -66,8 +66,9 @@ public class PetTypes extends Application implements LifecycleObserver {
         if(Names == null){
             Names = new MutableLiveData<>();
 
-            List<String> typeNames = new ArrayList<>(types.getTypes().size());
+            List<String> typeNames = new ArrayList<>(types.getTypes().size() + 1);
 
+            typeNames.add("Select a pet type");
             for(int i = 0; i < types.getTypes().size(); i++){
                 typeNames.add(types.getTypes().get(i).getName());
             }
