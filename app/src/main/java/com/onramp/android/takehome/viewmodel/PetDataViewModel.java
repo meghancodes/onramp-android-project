@@ -14,59 +14,60 @@ import java.util.List;
 public class PetDataViewModel extends AndroidViewModel implements LifecycleObserver {
 
     public Application application;
-    PetTypes pt;
+    //PetTypes pt;
     LiveData<List<String>> typeNames;
 
     public PetDataViewModel(@NonNull Application application) {
         super(application);
 
         this.application = application;
-        pt = new PetTypes(application);
+        //pt = new PetTypes(application);
     }
 
-    public LiveData<List<String>> getTypesList(){
-        typeNames = pt.getPetTypeNames();
+//    public LiveData<List<String>> getTypesList(){
+//        typeNames = pt.getPetTypeNames();
+//
+//        return typeNames;
+//    }
 
-        return typeNames;
+    public List<String> exposePet(){
+        List<String> pet = new ArrayList<>();
+        pet.add("Dog");
+        pet.add("Cat");
+        pet.add("Rabbit");
+        pet.add("Bird");
+        pet.add("Horse");
+        pet.add("Barnyard");
+
+        return pet;
     }
 
-    public List<String> exposeSex(){
-        List<String> sex = new ArrayList<>();
-        sex.add("Male");
-        sex.add("Female");
+    public List<String> exposeGender(){
+        List<String> gender = new ArrayList<>();
+        gender.add("Male");
+        gender.add("Female");
 
-        return sex;
+        return gender;
     }
 
     public List<String> exposeSize(){
         List<String> size = new ArrayList<>();
-        size.add("Male");
-        size.add("Female");
+        size.add("S");
+        size.add("M");
+        size.add("L");
+        size.add("XL");
 
         return size;
     }
 
     public List<String> exposeAge(){
         List<String> age = new ArrayList<>();
-        age.add("Male");
-        age.add("Female");
+        age.add("Baby");
+        age.add("Young");
+        age.add("Adult");
+        age.add("Senior");
 
         return age;
     }
 
-    public List<String> exposeGoodWith(){
-        List<String> goodWith = new ArrayList<>();
-        goodWith.add("Male");
-        goodWith.add("Female");
-
-        return goodWith;
-    }
-
-    public List<String> exposeSpecial(){
-        List<String> special = new ArrayList<>();
-        special.add("Male");
-        special.add("Female");
-
-        return special;
-    }
 }

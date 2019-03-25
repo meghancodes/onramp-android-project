@@ -1,9 +1,6 @@
 package com.onramp.android.takehome.view;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,30 +12,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.onramp.android.takehome.R;
-import com.onramp.android.takehome.model.PetTypes;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinnerPet;
-    private Spinner spinnerBreed;
-    private Spinner spinnerSex;
+    private Spinner spinnerGender;
     private Spinner spinnerSize;
     private Spinner spinnerAge;
-    private Spinner spinnerGoodWith;
-    private Spinner spinnerSpecial;
-    private EditText etZipCode;
-    private Button btnBegin;
     private Button btnSearch;
-    private PetDataViewModel pd;
+    private PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
     private String selectedPetType;
 
     @Override
@@ -59,50 +45,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //link variables to view components
         spinnerPet = findViewById(R.id.spinnerPet);
-        spinnerBreed = findViewById(R.id.spinnerBreed);
-        spinnerSex = findViewById(R.id.spinnerSex);
+        spinnerGender = findViewById(R.id.spinnerGender);
         spinnerSize = findViewById(R.id.spinnerSize);
         spinnerAge = findViewById(R.id.spinnerAge);
-        spinnerGoodWith = findViewById(R.id.spinnerGoodWith);
-        spinnerSpecial = findViewById(R.id.spinnerSpecial);
-        etZipCode = findViewById(R.id.etZipCode);
-        btnBegin = findViewById(R.id.btnBegin);
         btnSearch = findViewById(R.id.btnSearch);
 
-        //hide spinners that won't be filled in upon init
-        spinnerBreed.setVisibility(View.GONE);
-        spinnerSex.setVisibility(View.GONE);
-        spinnerSize.setVisibility(View.GONE);
-        spinnerAge.setVisibility(View.GONE);
-        spinnerGoodWith.setVisibility(View.GONE);
-        spinnerSpecial.setVisibility(View.GONE);
-        etZipCode.setVisibility(View.GONE);
-        btnSearch.setVisibility(View.GONE);
 
-        //populate spinner pet
-        initSpinner();
-        spinnerPet.setOnItemSelectedListener(this);
+        //initialize spinners
+        initSpinners();
 
-        btnBegin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(selectedPetType.equals("Select a pet type")){
-                    Toast.makeText(MainActivity.this, "Select a pet type from the " +
-                                    "dropdown to begin!", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    spinnerBreed.setVisibility(View.VISIBLE);
-                    spinnerSex.setVisibility(View.VISIBLE);
-                    spinnerSize.setVisibility(View.VISIBLE);
-                    spinnerAge.setVisibility(View.VISIBLE);
-                    spinnerGoodWith.setVisibility(View.VISIBLE);
-                    spinnerSpecial.setVisibility(View.VISIBLE);
-                    etZipCode.setVisibility(View.VISIBLE);
-                    btnSearch.setVisibility(View.VISIBLE);
-                    btnBegin.setVisibility(View.GONE);
-                }
-            }
-        });
+
 
         //Send data to search
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -114,31 +66,77 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public void initSpinner(){
-        //create new instance of viewmodel
-        pd = ViewModelProviders.of(this).get(PetDataViewModel.class);
-        getLifecycle().addObserver(pd);
-        pd.getTypesList().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                Log.d("Test", "Test");
-            }
-        });
+//    public void initSpinner(){
+//        //create new instance of viewmodel
+//        pd = ViewModelProviders.of(this).get(PetDataViewModel.class);
+//        getLifecycle().addObserver(pd);
+//        pd.getTypesList().observe(this, new Observer<List<String>>() {
+//            @Override
+//            public void onChanged(@Nullable List<String> strings) {
+//                Log.d("Test", "Test");
+//            }
+//        });
+//
+//        boolean bn = pd.getTypesList().hasActiveObservers();
+//        boolean obs = pd.getTypesList().hasObservers();
+//        List<String> typeNames = new ArrayList<>();
+//        typeNames = (List<String>) pd.getTypesList().getValue();
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+//                        android.R.layout.simple_spinner_item, typeNames);
+//
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerPet.setAdapter(adapter);
+//    }
 
-        boolean bn = pd.getTypesList().hasActiveObservers();
-        boolean obs = pd.getTypesList().hasObservers();
-        List<String> typeNames = new ArrayList<>();
-        typeNames = (List<String>) pd.getTypesList().getValue();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-                        android.R.layout.simple_spinner_item, typeNames);
+    public void initSpinners(){
+        //SpinnerPet
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(MainActivity.this,
+                        android.R.layout.simple_spinner_item, petDataViewModel.exposePet());
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPet.setAdapter(adapter);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPet.setAdapter(adapter1);
+        spinnerPet.setOnItemSelectedListener(this);
+
+
+        //SpinnerGender
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_spinner_item, petDataViewModel.exposeGender());
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGender.setAdapter(adapter2);
+        spinnerGender.setOnItemSelectedListener(this);
+
+
+        //SpinnerSize
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_spinner_item, petDataViewModel.exposeSize());
+
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSize.setAdapter(adapter3);
+        spinnerSize.setOnItemSelectedListener(this);
+
+
+        //SpinnerAge
+        ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_spinner_item, petDataViewModel.exposeAge());
+
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAge.setAdapter(adapter4);
+        spinnerAge.setOnItemSelectedListener(this);
+
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        int id = adapterView.getId();
+
+        switch(id){
+            case R.id.spinnerPet:
+                Log.d("In spinner pet? ", "Yes");
+                break;
+        }
         selectedPetType = adapterView.getItemAtPosition(i).toString();
+        Log.d("Test: ", selectedPetType);
     }
 
     @Override
