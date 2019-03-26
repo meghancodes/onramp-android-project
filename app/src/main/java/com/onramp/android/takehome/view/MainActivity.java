@@ -1,5 +1,6 @@
 package com.onramp.android.takehome.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -79,8 +80,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             Toast.LENGTH_LONG).show();
                 }
                 else {
+                    //Pass selected items to the viewmodel
                     PetDataViewModel pd = new PetDataViewModel(getApplication());
-                    pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge);
+                    //pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge);
+
+                    if(pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge)){
+                        //if items were successfully pass an intent to the next activity
+                        Intent i = new Intent(MainActivity.this, SearchResultsActivity.class);
+                        startActivity(i);
+                    }
                 }
             }
         });

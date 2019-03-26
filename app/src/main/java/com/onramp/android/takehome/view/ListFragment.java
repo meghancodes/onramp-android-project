@@ -2,7 +2,10 @@ package com.onramp.android.takehome.view;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,10 @@ import com.onramp.android.takehome.R;
  */
 public class ListFragment extends Fragment {
 
+    RecyclerView recyclerView; //refers to recyclerview called list
+    RecyclerView.Adapter myAdapter; //refers to carAdapter class
+    RecyclerView.LayoutManager layoutManager; //linear or gridlayout
+    View view; //refers to row_layout
 
     public ListFragment() {
         // Required empty public constructor
@@ -24,7 +31,22 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+        view = inflater.inflate(R.layout.fragment_list, container, false);
+        return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //set up recycler view
+        recyclerView = view.findViewById(R.id.fragment_list);
+        recyclerView.setHasFixedSize(true); //for better performance
+
+        layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        //myAdapter = new PetAdapter(this.getActivity(), ); pass list of data as second param
+        //recyclerView.setAdapter(myAdapter);
+    }
 }

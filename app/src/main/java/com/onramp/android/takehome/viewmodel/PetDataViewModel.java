@@ -33,7 +33,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
 //    }
 
 
-    public void onSearchButtonPressed(String pet, String gender, String size, String age){
+    public boolean onSearchButtonPressed(String pet, String gender, String size, String age){
         HashMap<String, String> searchParams = new HashMap<>();
 
         searchParams.put("animal", pet);
@@ -56,6 +56,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         petQuery = new PetQuery(application, searchParams);
         petQuery.parse();
 
+        return true;
     }
 
 
@@ -108,7 +109,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
             size = "XL";
         }
         else{
-            size.substring(0,1).toUpperCase();
+            size = size.substring(0,1).toUpperCase();
         }
 
         return size;
