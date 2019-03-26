@@ -81,16 +81,10 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
         viewHolder.tvDetails.setText(pets.get(i).getBreed());
 
         //put in the background
-        String url = processImages(pets.get(i).getAllImages());
-
-        Picasso.get().load(url).into(viewHolder.ivPet);
-//        Picasso.get()
-//                .load("http://i.imgur.com/DvpvklR.png")
-//                .placeholder(R.drawable.pets_placeholder)
-//                .error(R.drawable.sad)
-//                .resizeDimen(50,50)
-//                .centerInside()
-//                .into(viewHolder.ivPet);
+        //must be an https*
+        //String url = processImages(pets.get(i).getAllImages());
+        //String url = "https://i.ytimg.com/vi/28uUsJ72a1A/hqdefault.jpg";
+        Picasso.get().load(pets.get(i).getImageUrl()).into(viewHolder.ivPet);
 
 
     }

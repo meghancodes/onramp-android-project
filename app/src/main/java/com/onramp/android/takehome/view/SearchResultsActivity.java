@@ -62,6 +62,7 @@ public class SearchResultsActivity extends AppCompatActivity implements PetAdapt
         i.putExtra("age", petObjects.get(index).getAge());
         i.putExtra("description", petObjects.get(index).getDescription());
         i.putExtra("breed", petObjects.get(index).getBreed());
+        i.putExtra("image", petObjects.get(index).getImageUrl());
         startActivity(i);
     }
 }
