@@ -24,15 +24,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         super(application);
 
         this.application = application;
-        //pt = new PetTypes(application);
     }
-
-//    public LiveData<List<String>> getTypesList(){
-//        typeNames = pt.getPetTypeNames();
-//
-//        return typeNames;
-//    }
-
 
     public boolean onSearchButtonPressed(String pet, String gender, String size, String age){
         HashMap<String, String> searchParams = new HashMap<>();

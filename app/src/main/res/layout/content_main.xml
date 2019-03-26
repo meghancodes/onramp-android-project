@@ -9,14 +9,16 @@
     tools:context=".view.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivFeaturedPet"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/featured_pet"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/pets_placeholder" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/pets_placeholder"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="2dp" />
 
     <ScrollView
         android:layout_width="match_parent"

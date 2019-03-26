@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Button btnSearch;
     private ImageView ivFeaturedPet;
     private final PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
-
     private String selectedPet;
     private String selectedGender;
     private String selectedSize;
@@ -53,20 +53,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         //link variables to view components
         spinnerPet = (Spinner) findViewById(R.id.spinnerPet);
         spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
         spinnerSize = (Spinner) findViewById(R.id.spinnerSize);
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        ivFeaturedPet = (ImageView) findViewById(R.id.ivFeaturedPet);
 
         //initialize spinners
         initSpinners();
 
-
-
-        //Collect search queries
+        //Collect search queries on button click
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,32 +108,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
             }
         });
-
-
-
     }
 
-//    public void initSpinner(){
-//        //create new instance of viewmodel
-//        pd = ViewModelProviders.of(this).get(PetDataViewModel.class);
-//        getLifecycle().addObserver(pd);
-//        pd.getTypesList().observe(this, new Observer<List<String>>() {
-//            @Override
-//            public void onChanged(@Nullable List<String> strings) {
-//                Log.d("Test", "Test");
-//            }
-//        });
-//
-//        boolean bn = pd.getTypesList().hasActiveObservers();
-//        boolean obs = pd.getTypesList().hasObservers();
-//        List<String> typeNames = new ArrayList<>();
-//        typeNames = (List<String>) pd.getTypesList().getValue();
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-//                        android.R.layout.simple_spinner_item, typeNames);
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerPet.setAdapter(adapter);
-//    }
 
     public void initSpinners(){
         //SpinnerPet

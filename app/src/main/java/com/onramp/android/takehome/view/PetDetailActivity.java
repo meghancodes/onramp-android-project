@@ -3,6 +3,7 @@ package com.onramp.android.takehome.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,7 @@ import org.w3c.dom.Text;
 public class PetDetailActivity extends AppCompatActivity {
 
     private ImageView ivPet;
-    private TextView tvName, tvShortDescription, tvMeetMe, tvLongDescription, tvDetails;
+    private TextView tvName, tvShortDescription, tvMeetMe, tvLongDescription;
     private Button btnPromise;
     private ServiceViewModel serviceViewModel;
 
@@ -27,12 +28,12 @@ public class PetDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_detail);
 
+
         ivPet = (ImageView) findViewById(R.id.ivPet);
         tvName = (TextView) findViewById(R.id.tvName);
         tvShortDescription = (TextView) findViewById(R.id.tvShortDescription);
         tvMeetMe = (TextView) findViewById(R.id.tvMeetMe);
         tvLongDescription = (TextView) findViewById(R.id.tvLongDescription);
-        tvDetails = (TextView) findViewById(R.id.tvDetails);
         btnPromise = (Button) findViewById(R.id.btnPromise);
 
         //get intent extras
