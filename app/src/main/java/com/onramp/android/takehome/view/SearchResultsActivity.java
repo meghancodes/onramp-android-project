@@ -10,10 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +40,10 @@ public class SearchResultsActivity extends AppCompatActivity implements PetAdapt
         //get passed viewmodel instance
         Gson gson = new Gson();
         String petObjectsString = getIntent().getStringExtra("petObjectsString");
-        petObjects = gson.fromJson(petObjectsString, ArrayList.class);
+
+        Type PetObjectType = new TypeToken<List<PetObject>>(){}.getType();
+
+        petObjects = gson.fromJson(petObjectsString, PetObjectType);
 
         fragmentManager.beginTransaction()
                 .show(listFragment)

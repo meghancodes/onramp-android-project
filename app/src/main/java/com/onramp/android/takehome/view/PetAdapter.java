@@ -10,27 +10,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onramp.android.takehome.R;
+import com.onramp.android.takehome.model.pets.PetObject;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
 
     ItemClicked activity;
+
+    private List<PetObject> pets;
 
     public interface ItemClicked {
         void onItemClicked(int index);
     }
 
     //get list of data from viewmodel
-    public PetAdapter(@NonNull Context context) {
+    public PetAdapter(@NonNull Context context, List<PetObject> list) {
         activity = (ItemClicked) context;
+        this.pets = list;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPet;
         TextView tvName,tvDetails;
 
-        public ViewHolder(View itemView, ){
+        public ViewHolder(View itemView){
             super(itemView);
 
             ivPet = itemView.findViewById(R.id.ivPet);
@@ -41,7 +48,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    activity.onItemClicked(pets.indexOf((PetObject) view.getTag()));
                 }
             });
 
@@ -60,14 +67,18 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    //set UI data for each pet returned
     @Override
     public void onBindViewHolder(@NonNull PetAdapter.ViewHolder viewHolder, int i) {
+        viewHolder.itemView.setTag(pets.get(i));
 
+        viewHolder.tvName.setText(this.pets.get(i).getName());
+        viewHolder.tvDetails.setText(pets.get(i).getBreed());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return pets.size();
     }
 
 

@@ -23,11 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.APIManager;
 import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,8 +108,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                         //prep viewmodel instance to send
                         Gson gson = new Gson();
+                        Type PetObjectType = new TypeToken<List<PetObject>>(){}.getType();
 
-                        String petObjectsString = gson.toJson(petObjects);
+                        String petObjectsString = gson.toJson(petObjects, PetObjectType);
 
                         Intent i = new Intent(MainActivity.this, SearchResultsActivity.class);
                         i.putExtra("petObjectsString", petObjectsString);

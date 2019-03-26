@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onramp.android.takehome.R;
+import com.onramp.android.takehome.model.pets.PetObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +25,7 @@ public class ListFragment extends Fragment {
     RecyclerView.Adapter myAdapter; //refers to carAdapter class
     RecyclerView.LayoutManager layoutManager; //linear or gridlayout
     View view; //refers to row_layout
+
     SearchResultsActivity sra = new SearchResultsActivity();
 
     public ListFragment() {
@@ -40,14 +45,13 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //set up recycler view
         recyclerView = view.findViewById(R.id.fragment_list);
         recyclerView.setHasFixedSize(true); //for better performance
 
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        myAdapter = new PetAdapter(this.getActivity(), ); pass list of data as second param
-        //recyclerView.setAdapter(myAdapter);
+        myAdapter = new PetAdapter(this.getActivity(), ((SearchResultsActivity)this.getActivity()).petObjects); //pass list of data as second param
+        recyclerView.setAdapter(myAdapter);
     }
 }
