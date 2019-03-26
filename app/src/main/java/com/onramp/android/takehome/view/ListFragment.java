@@ -26,8 +26,6 @@ public class ListFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager; //linear or gridlayout
     View view; //refers to row_layout
 
-    SearchResultsActivity sra = new SearchResultsActivity();
-
     public ListFragment() {
         // Required empty public constructor
     }
