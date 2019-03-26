@@ -11,6 +11,7 @@ public class ServiceManager {
         this.application = application;
 
         serviceIntent = new Intent(application, DownloadFileService.class);
+        application.startService(serviceIntent);
     }
 
 

@@ -19,7 +19,7 @@ public class PetDetailActivity extends AppCompatActivity {
 
     private ImageView ivPet;
     private TextView tvName, tvShortDescription, tvMeetMe, tvLongDescription, tvDetails;
-    private Button btnAdopt, btnPromise;
+    private Button btnPromise;
     private ServiceViewModel serviceViewModel;
 
     @Override
@@ -33,7 +33,6 @@ public class PetDetailActivity extends AppCompatActivity {
         tvMeetMe = (TextView) findViewById(R.id.tvMeetMe);
         tvLongDescription = (TextView) findViewById(R.id.tvLongDescription);
         tvDetails = (TextView) findViewById(R.id.tvDetails);
-        btnAdopt = (Button) findViewById(R.id.btnAdopt);
         btnPromise = (Button) findViewById(R.id.btnPromise);
 
         //get intent extras
@@ -75,12 +74,7 @@ public class PetDetailActivity extends AppCompatActivity {
             }
         });
 
-        btnAdopt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Test", "IN ADOPT BUTTON");
-            }
-        });
+
 
 
     }
