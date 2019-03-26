@@ -2,6 +2,7 @@ package com.onramp.android.takehome.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,5 +55,13 @@ public class SearchResultsActivity extends AppCompatActivity implements PetAdapt
     @Override
     public void onItemClicked(int index) {
         //pass the clicked item to the next activity
+        Intent i = new Intent(this, PetDetailActivity.class);
+        i.putExtra("name", petObjects.get(index).getName());
+        i.putExtra("gender", petObjects.get(index).getSex());
+        i.putExtra("size", petObjects.get(index).getSize());
+        i.putExtra("age", petObjects.get(index).getAge());
+        i.putExtra("description", petObjects.get(index).getDescription());
+        i.putExtra("breed", petObjects.get(index).getBreed());
+        startActivity(i);
     }
 }
