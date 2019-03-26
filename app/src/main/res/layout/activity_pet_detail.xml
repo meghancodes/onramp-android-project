@@ -32,6 +32,8 @@
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:gravity="center_horizontal"
                 android:text="TextView"
                 android:textSize="18sp"
@@ -41,14 +43,9 @@
                 android:id="@+id/tvShortDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
                 android:gravity="center_horizontal"
                 android:text="TextView" />
 
@@ -58,7 +55,9 @@
                 android:id="@+id/tvMeetMe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:gravity="center_horizontal"
                 android:text="TextView"
                 android:textSize="16sp"
@@ -68,7 +67,9 @@
                 android:id="@+id/tvLongDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
                 android:gravity="center_horizontal"
                 android:text="TextView" />
 
@@ -78,7 +79,9 @@
                 android:id="@+id/tvAdditionalDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:gravity="center_horizontal"
                 android:text="@string/additional_details"
                 android:textSize="16sp"
@@ -88,7 +91,9 @@
                 android:id="@+id/tvDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
                 android:gravity="center_horizontal"
                 android:text="TextView" />
 
@@ -99,7 +104,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnAdopt"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
