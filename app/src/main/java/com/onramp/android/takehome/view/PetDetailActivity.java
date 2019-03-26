@@ -68,18 +68,14 @@ public class PetDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("Test", "IN PROMISE BUTTON");
-                serviceViewModel = new ServiceViewModel(getApplication());
-                serviceViewModel.initService();
+                //serviceViewModel = new ServiceViewModel(getApplication());
+                //serviceViewModel.initService();
 
             }
         });
 
 
 
-
-    }
-
-    public void onPromiseButtonClick(){
 
     }
 

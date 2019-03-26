@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinnerSize;
     private Spinner spinnerAge;
     private Button btnSearch;
+    private ImageView ivFeaturedPet;
     private final PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
 
     private String selectedPet;
@@ -50,17 +52,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
-        //APIManager apiManager = new APIManager();
-        //apiManager.getResults("Dog");
 
         //link variables to view components
         spinnerPet = (Spinner) findViewById(R.id.spinnerPet);
