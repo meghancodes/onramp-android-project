@@ -52,6 +52,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
 
         //begin pet search
         petQuery = new PetQuery(application, searchParams);
+        petQuery.parse();
 
     }
 

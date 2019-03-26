@@ -6,17 +6,22 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.model.pets.PetObjects;
 import com.onramp.android.takehome.model.pettype.Types;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PetQuery {
 
     private Context context;
     private HashMap<String, String> searchParameters;
+    PetObjects petObjects;
+    List<PetObject> resultPets = new ArrayList<>();
 
     //query file for data
     public PetQuery(Context context, HashMap<String, String> searchParameters){
@@ -42,14 +47,74 @@ public class PetQuery {
             e.printStackTrace();
         }
 
-        PetObjects objects = new Gson().fromJson(json, PetObjects.class);
-
-        Log.d("Test", "Test: " + objects.getObjects().get(0).getName());
-        Log.d("Testing params: ", "yup: " + searchParameters.get("animal"));
+        petObjects = new Gson().fromJson(json, PetObjects.class);
 
     }
 
-    void parsePets(){
+    public void parse(){
+        parseAnimal();
 
+        if(searchParameters.containsKey("gender")){
+            parseGender();
+        }
+        if(searchParameters.containsKey("size")){
+            parseSize();
+        }
+        if(searchParameters.containsKey("age")){
+            parseAge();
+        }
+    }
+
+    public void parseAnimal(){
+        for(int i = 0; i < petObjects.getObjects().size(); i++){
+            if(petObjects.getObjects().get(i).getAnimal().equals(searchParameters.get("animal"))){
+                resultPets.add(petObjects.getObjects().get(i));
+            }
+        }
+    }
+
+    public boolean parseGender(){
+        if(resultPets.size() > 0){
+            for(int i = 0; i < resultPets.size(); i++){
+                if(!resultPets.get(i).getSex().equals(searchParameters.get("gender"))){
+                    resultPets.remove(i);
+                }
+            }
+        }
+        else{
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean parseSize(){
+        if(resultPets.size() > 0){
+            for(int i = 0; i < resultPets.size(); i++){
+                if(!resultPets.get(i).getSize().equals(searchParameters.get("size"))){
+                    resultPets.remove(i);
+                }
+            }
+        }
+        else{
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean parseAge(){
+        if(resultPets.size() > 0){
+            for(int i = 0; i < resultPets.size(); i++){
+                if(!resultPets.get(i).getAge().equals(searchParameters.get("age"))){
+                    resultPets.remove(i);
+                }
+            }
+        }
+        else{
+            return false;
+        }
+
+        return true;
     }
 }
