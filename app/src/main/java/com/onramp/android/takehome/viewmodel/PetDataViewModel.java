@@ -3,11 +3,9 @@ package com.onramp.android.takehome.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.onramp.android.takehome.model.PetTypes;
+import com.onramp.android.takehome.model.PetQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +15,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
 
     public Application application;
     private HashMap<String, String> searchParams;
+    PetQuery petQuery;
     //PetTypes pt;
     //LiveData<List<String>> typeNames;
 
@@ -33,12 +32,27 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
 //        return typeNames;
 //    }
 
-    public void submitSearchParams(HashMap<String, String> searchParams){
+
+    public void onSearchButtonPressed(String pet, String gender, String size, String age){
+        HashMap<String, String> searchParams = new HashMap<>();
+
+        searchParams.put("animal", pet);
+
+        if(!gender.equals("Select a gender")){
+            searchParams.put("sex", gender);
+        }
+        if(!size.equals("Select a size")){
+            searchParams.put("size", size);
+        }
+        if(!age.equals("Select an age")){
+            searchParams.put("age", age);
+        }
+
         this.searchParams = searchParams;
 
-        Log.d("Search params: ", "First: " + searchParams.get("animal"));
-        Log.d("Search params: ", "2nd: " + searchParams.get("sex"));
-        Log.d("Search params: ", "3rd: " + searchParams.get("age"));
+        //begin pet search
+        petQuery = new PetQuery(application, searchParams);
+
     }
 
 

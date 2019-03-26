@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        APIManager apiManager = new APIManager();
-        apiManager.getResults("Dog");
+        //APIManager apiManager = new APIManager();
+        //apiManager.getResults("Dog");
 
         //link variables to view components
         spinnerPet = (Spinner) findViewById(R.id.spinnerPet);
@@ -73,28 +73,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String, String> searchParams = new HashMap<>();
-
                 if(selectedPet.equals("Select a pet")){
                     //A pet must be selected to search
                     Toast.makeText(MainActivity.this, "Select a pet to start!",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    searchParams.put("animal", selectedPet);
-
-                    if(!selectedGender.equals("Select a gender")){
-                        searchParams.put("sex", selectedGender);
-                    }
-                    if(!selectedSize.equals("Select a size")){
-                        searchParams.put("size", selectedSize);
-                    }
-                    if(!selectedAge.equals("Select an age")){
-                        searchParams.put("age", selectedAge);
-                    }
+                    PetDataViewModel pd = new PetDataViewModel(getApplication());
+                    pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge);
                 }
-
-                petDataViewModel.submitSearchParams(searchParams);
             }
         });
 
