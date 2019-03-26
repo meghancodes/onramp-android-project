@@ -1,9 +1,12 @@
 package com.onramp.android.takehome.view;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,11 +22,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.APIManager;
+import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -33,21 +39,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinnerSize;
     private Spinner spinnerAge;
     private Button btnSearch;
-    private PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
+    private final PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
 
     private String selectedPet;
     private String selectedGender;
     private String selectedSize;
     private String selectedAge;
+    List<PetObject> petObjects;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final PetDataViewModel pd = new PetDataViewModel(getApplication());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //initialize spinners
         initSpinners();
 
+
+
         //Collect search queries
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,17 +90,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 else {
                     //Pass selected items to the viewmodel
-                    PetDataViewModel pd = new PetDataViewModel(getApplication());
+                    //PetDataViewModel pd = new PetDataViewModel(getApplication());
                     //pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge);
 
                     if(pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge)){
-                        //if items were successfully pass an intent to the next activity
+                        //pass an intent with pd object to the next activity
+                        Log.d("Here? ", "Result: true!");
+
+                        pd.getPetObjects().observe(MainActivity.this, new Observer<List<PetObject>>() {
+                            @Override
+                            public void onChanged(@Nullable List<PetObject> petObjects) {
+                                MainActivity.this.petObjects = petObjects;
+                            }
+                        });
+
+                        //prep viewmodel instance to send
+                        Gson gson = new Gson();
+
+                        String petObjectsString = gson.toJson(petObjects);
+
                         Intent i = new Intent(MainActivity.this, SearchResultsActivity.class);
+                        i.putExtra("petObjectsString", petObjectsString);
                         startActivity(i);
+                    }
+                    else{
+                        //no search results found
+                        Snackbar.make(view, "Your search returned no results. Please try" +
+                                " again.", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 }
             }
         });
+
+
 
     }
 

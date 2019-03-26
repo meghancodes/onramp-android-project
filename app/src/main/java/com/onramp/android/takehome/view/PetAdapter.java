@@ -30,7 +30,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
         ImageView ivPet;
         TextView tvName,tvDetails;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView, ){
             super(itemView);
 
             ivPet = itemView.findViewById(R.id.ivPet);

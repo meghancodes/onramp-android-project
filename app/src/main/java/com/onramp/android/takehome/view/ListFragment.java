@@ -17,10 +17,11 @@ import com.onramp.android.takehome.R;
  */
 public class ListFragment extends Fragment {
 
-    RecyclerView recyclerView; //refers to recyclerview called list
+    RecyclerView recyclerView; //refers to recyclerview
     RecyclerView.Adapter myAdapter; //refers to carAdapter class
     RecyclerView.LayoutManager layoutManager; //linear or gridlayout
     View view; //refers to row_layout
+    SearchResultsActivity sra = new SearchResultsActivity();
 
     public ListFragment() {
         // Required empty public constructor
@@ -46,7 +47,7 @@ public class ListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        //myAdapter = new PetAdapter(this.getActivity(), ); pass list of data as second param
+        myAdapter = new PetAdapter(this.getActivity(), ); pass list of data as second param
         //recyclerView.setAdapter(myAdapter);
     }
 }

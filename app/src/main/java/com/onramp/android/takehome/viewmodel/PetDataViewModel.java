@@ -3,9 +3,12 @@ package com.onramp.android.takehome.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.onramp.android.takehome.model.PetQuery;
+import com.onramp.android.takehome.model.pets.PetObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,8 +19,6 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
     public Application application;
     private HashMap<String, String> searchParams;
     PetQuery petQuery;
-    //PetTypes pt;
-    //LiveData<List<String>> typeNames;
 
     public PetDataViewModel(@NonNull Application application) {
         super(application);
@@ -43,7 +44,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
             searchParams.put("sex", gender);
         }
         if(!size.equals("Select a size")){
-            size = formatXL(size);
+            size = formatSize(size);
             searchParams.put("size", size);
         }
         if(!age.equals("Select an age")){
@@ -54,9 +55,12 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
 
         //begin pet search
         petQuery = new PetQuery(application, searchParams);
-        petQuery.parse();
 
-        return true;
+        return petQuery.parse();
+    }
+    
+    public LiveData<List<PetObject>> getPetObjects(){
+        return petQuery.results;
     }
 
 
@@ -104,7 +108,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         return age;
     }
 
-    public String formatXL(String size){
+    public String formatSize(String size){
         if(size.equals("Extra Large")){
             size = "XL";
         }

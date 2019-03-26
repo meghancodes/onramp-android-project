@@ -20,8 +20,9 @@ public class PetQuery {
 
     private Context context;
     private HashMap<String, String> searchParameters;
-    PetObjects petObjects;
-    List<PetObject> resultPets = new ArrayList<>();
+    private PetObjects petObjects;
+    private List<PetObject> resultPets = new ArrayList<>();
+    public MutableLiveData<List<PetObject>> results = new MutableLiveData<>();
 
     //query file for data
     public PetQuery(Context context, HashMap<String, String> searchParameters){
@@ -51,7 +52,8 @@ public class PetQuery {
 
     }
 
-    public void parse(){
+    public boolean parse(){
+
         parseAnimal();
 
         if(searchParameters.containsKey("gender")){
@@ -64,6 +66,9 @@ public class PetQuery {
             parseAge();
         }
 
+        results.setValue(resultPets);
+        return resultPets.size() > 0;
+
     }
 
     public void parseAnimal(){
@@ -74,48 +79,29 @@ public class PetQuery {
         }
     }
 
-    public boolean parseGender(){
-        if(resultPets.size() > 0){
-            for(int i = 0; i < resultPets.size(); i++){
-                if(!resultPets.get(i).getSex().equals(searchParameters.get("gender"))){
-                    resultPets.remove(i);
-                }
+    public void parseGender(){
+        for(int i = 0; i < resultPets.size(); i++){
+            if(!resultPets.get(i).getSex().equals(searchParameters.get("gender"))){
+                resultPets.remove(i);
             }
         }
-        else{
-            return false;
-        }
-
-        return true;
     }
 
-    public boolean parseSize(){
-        if(resultPets.size() > 0){
-            for(int i = 0; i < resultPets.size(); i++){
-                if(!resultPets.get(i).getSize().equals(searchParameters.get("size"))){
-                    resultPets.remove(i);
-                }
+    public void parseSize(){
+        for(int i = 0; i < resultPets.size(); i++){
+            if(!resultPets.get(i).getSize().equals(searchParameters.get("size"))){
+                resultPets.remove(i);
             }
         }
-        else{
-            return false;
-        }
-
-        return true;
     }
 
-    public boolean parseAge(){
-        if(resultPets.size() > 0){
-            for(int i = 0; i < resultPets.size(); i++){
-                if(!resultPets.get(i).getAge().equals(searchParameters.get("age"))){
-                    resultPets.remove(i);
-                }
+    public void parseAge() {
+        for (int i = 0; i < resultPets.size(); i++) {
+            if (!resultPets.get(i).getAge().equals(searchParameters.get("age"))) {
+                resultPets.remove(i);
             }
         }
-        else{
-            return false;
-        }
-
-        return true;
     }
+
+
 }
