@@ -45,7 +45,7 @@ public class PetDetailActivity extends AppCompatActivity {
 
 
         //long description
-        String longDesc = getIntent().getStringExtra("name");
+        String longDesc = getIntent().getStringExtra("description");
 
         //additional details
 
@@ -77,7 +77,7 @@ public class PetDetailActivity extends AppCompatActivity {
                 size = "Extra Large";
                 break;
         }
-        
+
         return size;
     }
 }
