@@ -39,9 +39,11 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         searchParams.put("animal", pet);
 
         if(!gender.equals("Select a gender")){
+            gender = gender.substring(0,1).toUpperCase();
             searchParams.put("sex", gender);
         }
         if(!size.equals("Select a size")){
+            size = formatXL(size);
             searchParams.put("size", size);
         }
         if(!age.equals("Select an age")){
@@ -85,7 +87,7 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         size.add("Small");
         size.add("Medium");
         size.add("Large");
-        size.add("Extra large");
+        size.add("Extra Large");
 
         return size;
     }
@@ -99,6 +101,17 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         age.add("Senior");
 
         return age;
+    }
+
+    public String formatXL(String size){
+        if(size.equals("Extra Large")){
+            size = "XL";
+        }
+        else{
+            size.substring(0,1).toUpperCase();
+        }
+
+        return size;
     }
 
 }

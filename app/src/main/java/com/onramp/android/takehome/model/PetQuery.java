@@ -63,6 +63,7 @@ public class PetQuery {
         if(searchParameters.containsKey("age")){
             parseAge();
         }
+
     }
 
     public void parseAnimal(){
