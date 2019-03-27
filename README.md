@@ -4,82 +4,60 @@
 
 ## Overview 🤖
 
-Congratulations for making it this far in the interview process for the Pandora Demo Tape Apprenticeship at Onramp. This project seeks to better inform the Onramp team of your experience with Java programming and Android development as well as prepare you for your interview at Pandora. 
+Furry Angel Finder is an Android application that makes searching for adoptable pets easy. Thanks to its simple UI, users can set search filters and view details about the furry angels matching their search criteria.
 
-You will have seven days to complete it. We expect those who have a moderate level of Android and Java development experience to spend between 24 and 32 hours to design, implement, document, and submit the project to us. Depending on your level, it may take more or less time, so please plan accordingly.
+In addition, the application provides a downloadable link to a Pet Promise Certification, the perfect gift for a loved one on the hunt for a new pet.
 
 ## Description and Details 🔎
 
-#### Researching and Plagiarism
+Furry Angel Finder is comprised of three activities, one fragment, one service and various UI components, including Buttons, Cards, a List, a Divider and a Snackbar. The application is built in accordance with the MVVM architectural pattern.
 
-You are actively encouraged to research the web, books, videos, or tutorials for this project. That said, we expect all code that is submitted to be your own (e.g. this project should **NOT** be completed with another person). That means that we expect each candidate to refrain from copying and/or pasting code into the project. If we find copied code in your project, we will have to disqualify you.. 
+#### Architectural Overview
 
-#### Android App Requirements
+The three app Activities are MainActivity, SearchResultsActivity and PetDetailActivity. The Service is DownloadFileService.
 
-The Onramp team wants you to build an Android application which is related to something you are passionate about. This will enable us and the Pandora interviewers to learn more about you. Please scope your features to what you can reasonably accomplish within the designated timeframe. Scoping the functionality accurately is important to ensure you have a completed application by the submission deadline. Though the type of application you build and it's feature-set is defined by you, there are architectural requirements which each Android application should meet. They include:
+MainActivity
+ 
+MainActivity displays the initial UI for the app. It collects user search parameters and receives search results. Upon receiving the results, it passes them in an Intent which starts SearchResultsActivity.
 
-*   The usage of a minimum of at least three [Activities](https://developer.android.com/guide/components/activities). 
-*   The usage of a minimum of at-least one [Service](https://developer.android.com/guide/components/services).
-*   The usage of the [MVVM](https://medium.com/@husayn.hakeem/android-by-example-mvvm-data-binding-introduction-part-1-6a7a5f388bf7) architectural pattern.
-*   The usage of a minimum of at least five UI components from the [Android Material Design Component Library](https://material.io/design/components/bottom-navigation.html).
-*   The usage of a minimum one [Fragment](https://developer.android.com/guide/components/fragments).
+SearchResultsActivity
 
-**Note you will need to detail where and how your Android App meets these requirements in your repository's  README file when you submit your project.**
+SearchResultsActivity displays a list of search results. If the user clicks on one of the results items, an intent is passed to start PetDetailActivity along with pet data that will be shown on the new Activity.
 
-## What we're looking for 🌟
+PetDetailActivity
 
-We will evaluate your project by assessing the overall strength and quality of the following five factors: 
+PetDetailActivity displays details about the selected pet. Details include the pet's image, name, gender, breed, size, age and a long description. PetDetailActivity also displays a button, which when pressed, executes the methods necessary to start the application's service.
 
-#### UI Design
+DownloadFileService
 
-Android users expect your application to look and behave in a way that's consistently intuitive. Your Android application should utilize thoughtful [animations](https://material.io/design/motion/), [patterns](https://material.io/design/), [style](https://material.io/design/color/), [components](https://material.io/design/components/) and [layouts](https://material.io/design/layout/understanding-layout.html) to create a highly usable user interface.
+DownloadFileService downloads a file from the internet using a URL.
 
-#### Architecture Pattern
+#### Design Patterns
 
-An architecture pattern enables you to define a guide for how a piece of software should function, such that it can be scalable, maintainable, and testable. Common patterns for Android applications include [MVC](https://medium.com/upday-devs/android-architecture-patterns-part-1-model-view-controller-3baecef5f2b6) (Model View Controller), [MVP](https://android.jlelse.eu/architectural-guidelines-to-follow-for-mvp-pattern-in-android-2374848a0157) (Model View Presenter) and [MVVM](https://medium.com/@husayn.hakeem/android-by-example-mvvm-data-binding-introduction-part-1-6a7a5f388bf7) (Model View ViewModel). **Note that it is required that you leverage the MVVM pattern within your Android app.**
+The application's design adheres to the MVVM (Model, View, ViewModel) architectural pattern. In this pattern, the Model contains the application data, state and business logic. It is not directly connected to the View or ViewModel. The View contains everything related to the UI, including Activities and Fragments. It receives UI-relevant updates by binding to observable variables and actions in the ViewModel. Finally, the ViewModel provides a way for the View to communicate events to the Model, while also preparing observable data for the View. The ViewModel does not contain any reference of the View.
+
+In the app, the View consists of MainActivity, SearchResultsActivity and PetDetailActivity - three Activities, along with a fragment and adapter class. The ViewModel consists of two classes. The Model consists of one service - DownloadFileService, and a handful of classes. When the app first runs, MainActivity executes. It sends the user's pet selection criteria to the ViewModel via a method. The ViewModel passes that data to the Model. The Model then loads and parses a JSON file based on the search data. Since the Model is not tied to the ViewModel, it instantiates a MutableLiveData observer object, and sets its value to the result of the query.  
+The ViewModel observes this update, receives the result and updates its own LiveData observer object. The View observes this object and passes it along with an Intent to start the second Activity, SearchResultsActivity.
+
+In this activity, the search results object is carefully processed and made visible to the user in the form of a RecyclerView list on a Fragment. If a user clicks on one of the resulting pets, an Intent is passed to the third Activity, PetDetailActivity. In this activity, if the user clicks on the "Give A Pet Promise" Button, the Button's onClick method is connected to a method in the ViewModel which instantiates a class in the Model which starts a Service.
+This Service, DownloadFileService, downloads a Pet Promise Certificate from the internet to the user's phone.     
+
+This structure makes the app reusable. Since the Model, View and ViewModel are separate from each other, the developer can easily pass UI events from the View to the ViewModel to the Model, add necessary business logic to the Model, and create observer variables to communicate the data and make UI updates.   
+
+#### Overall User Flow
+
+Upon running the app, MainActivity is the first component to execute. Within this activity, the app's initial user interface is built.
+
+The user can click on each of the four dropdown arrows to select filters for pet type, gender, size and age. After specifying filters, the user can click on the "Search" Button to begin the search.
+
+If there are no pets matching the search query, a Snackbar is displayed notifying the user and prompting for different search parameters.
+
+If there are pets matching the search query, the application navigates to SearchResultsActivity. This Activity contains a Fragment which displays a vertical RecyclerView list of pet results. Each item in the list is displayed on a Card for improved clarity.
+
+Here, the user can click on a list item to view more details about a specific furry angel of interest. 
+
+Details include the pet's image, name, gender, breed, size, age and a long description.
+
+If the user clicks on the "Give A Pet Promise" Button, a Pet Promise Certificate file will be downloaded to their phone for them to fill out and give to someone.
 
 
-#### Core Android Components
-
-[Activities](https://developer.android.com/guide/components/activities), [Services](https://developer.android.com/guide/components/services), [Broadcast Receivers](https://developer.android.com/reference/android/content/BroadcastReceiver.html), and [Content Providers](https://developer.android.com/guide/topics/providers/content-providers.html) are four types of Android Application components, which are the essential building blocks of an Android app. Each serves a distinct purpose and has a distinct lifecycle that defines how the component is created and destroyed. 
-
-The usage of Activities and Services are extremely common when implementing Android apps and are therefore **mandatory** to include in your project, however, the usage of a Broadcast Receiver and/or Content Provider is optional, depending on the app design.
-
-#### Android Development Best Practices
-
-It's important to subscribe to a set of best practices when designing and implementing an Android app. Be mindful of these widely accepted principles:
-
-*   [DRY](https://code.tutsplus.com/tutorials/3-key-software-principles-you-must-understand--net-25161) (don't repeat yourself)
-*   Maintain a [separation of concerns](https://developer.android.com/jetpack/docs/guide#separation-of-concerns) within your Android components
-*   Specify good [project structure](https://developer.android.com/studio/intro)
-
-Using these principles will result in a high quality user experience while efficiently utilizing phone hardware resources and ensuring other developers can easily navigate through your code.
-
-#### Android Application Description
-
-As detailed above, each project submission must include a README file, which provides an overview of the Android application and details the app's overall MVVM architecture as well as your design decisions.. Screenshots of the Android app taken from the Android Studio emulator are also required. This task assesses the critical competency of communicating and documenting technical concepts.
-
-**Note: Testing frameworks and strategies are intentionally NOT included within the rubric because we want you to dedicate your time to building a functional application (We do realize that UI and Android component testing are critical practices of Android Development, but this take home project prioritizes a focus on surfacing Java/Android development proficiency).**
-
-## Submission Information 🚀
-
-#### Submission Format
-
-This repository will be your starting point. Please clone (not fork) this Github repository ([onramp-android-take-home](https://github.com/onramp-io/onramp-android-take-home)) and commit to your master branch for the project. Once the Android application has been completed, you'll be submitting a link to the repository. Prior to submitting your project, you should update the README file to provide the following information:
-
-*   A high level architectural overview of your Android application. e.g. names, relationships and purposes of all components, including Activities, Services, Content Providers, Broadcast Receivers, etc. 
-*   A brief description of any design patterns that you leveraged.
-*   [Screenshots](https://developer.android.com/studio/debug/am-screenshot) of each Activity View and descriptions of the overall user flow.
-
-#### Submission Deadline + Process
-
-You must submit your project at **11:59pm PST, the night before your interview**. Your project will be considered complete when you email [submissions@onramp.io](mailto:engineering@onramp.io) with a link to your repository. 
-
-## Additional Resources 📚
-
-*   [Android Studio](https://developer.android.com/studio)
-*   [Android Application Fundamentals](https://developer.android.com/guide/components/fundamentals)
-*   [Design for Android Developers](https://developer.android.com/design)
-*   [Android Material Design Component Library](https://material.io/design/components/bottom-navigation.html)
-*   [Basic concepts of software architecture patterns in Android](https://android.jlelse.eu/basic-concepts-of-software-architecture-patterns-in-android-c76e53f46cba)
-*   [Wake up to Pandora with the Clock app from Google](https://engineering.pandora.com/wake-up-to-pandora-with-the-clock-app-from-google-7859fe7743aa) (Pandora Engineering Blog post)
