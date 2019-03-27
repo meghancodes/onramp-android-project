@@ -3,12 +3,10 @@ package com.onramp.android.takehome.model;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.model.pets.PetObjects;
-import com.onramp.android.takehome.model.pettype.Types;
 
 import java.io.IOException;
 import java.io.InputStream;
