@@ -20,10 +20,11 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
 public class DownloadFileService extends IntentService {
 
-    private int result = Activity.RESULT_CANCELED;
-    public static final String URL = "https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/08/petfinder-pet-promise-certificate.pdf";
+    private long downloadID;
 
     public DownloadFileService() {
         super("DownloadFileService");
@@ -35,83 +36,25 @@ public class DownloadFileService extends IntentService {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /**
+     * Use a background thread to run service - download the Pet Promise Certificate
+     * @param intent
+     */
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        File output = new File(Environment.getExternalStorageDirectory(),
-                "index.html");
-        if (output.exists()) {
-            output.delete();
-        }
-
-        InputStream stream = null;
-        FileOutputStream fos = null;
-        try {
-
-            java.net.URL url = new URL(URL);
-            stream = url.openConnection().getInputStream();
-            InputStreamReader reader = new InputStreamReader(stream);
-            fos = new FileOutputStream(output.getPath());
-            int next = -1;
-            while ((next = reader.read()) != -1) {
-                fos.write(next);
-            }
-            // successfully finished
-            result = Activity.RESULT_OK;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        returnResults(output.getAbsolutePath(), result);
+        File file=new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS), "");
+        /*
+        Create a DownloadManager.Request with all the information necessary to start the download
+         */
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/08/petfinder-pet-promise-certificate.pdf"))
+                .setTitle("Dummy File")// Title of the Download Notification
+                .setDescription("Downloading")// Description of the Download Notification
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)// Visibility of the download Notification
+                .setDestinationUri(Uri.fromFile(file))// Uri of the destination file
+                .setRequiresCharging(false)// Set if charging is required to begin the download
+                .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
+                .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
+        DownloadManager downloadManager= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadID = downloadManager.enqueue(request);// enqueue puts the download request in the queue.
     }
-
-    public void returnResults(String outputPath, int result){
-        Intent intent = new Intent("download");
-        intent.putExtra("path", outputPath);
-        intent.putExtra("result", result);
-        sendBroadcast(intent);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-        //return super.onStartCommand(intent, flags, startId);
-
-//        DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-//
-//        Uri downloadUri = Uri.parse("https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/08/petfinder-pet-promise-certificate.pdf");
-//
-//        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-//        request.setAllowedOverRoaming(false);
-//        request.setTitle("Downloading Pet Promise Certificate");
-//        request.setDescription("Pet Promise Certificate");
-//        request.setVisibleInDownloadsUi(true);
-//        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Pet Promise Certificate");
-//
-//
-//        downloadManager.enqueue(request);
-
-//        Log.d("Testing", "TESTING SERVICE");
-
-//        return START_STICKY;
-//    }
 }

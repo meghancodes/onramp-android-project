@@ -32,12 +32,15 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolder> {
         void onItemClicked(int index);
     }
 
-    //get list of data from viewmodel
+
     public PetAdapter(@NonNull Context context, List<PetObject> list) {
         activity = (ItemClicked) context;
         this.pets = list;
     }
 
+    /**
+     * Custom ViewHolder class that instantiates row_layout items
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPet;
         TextView tvName,tvDetails;

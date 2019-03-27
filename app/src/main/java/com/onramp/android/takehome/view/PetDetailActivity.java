@@ -1,6 +1,9 @@
 package com.onramp.android.takehome.view;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +19,13 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
 public class PetDetailActivity extends AppCompatActivity {
 
     private ImageView ivPet;
@@ -23,6 +33,12 @@ public class PetDetailActivity extends AppCompatActivity {
     private Button btnPromise;
     private ServiceViewModel serviceViewModel;
 
+    /**
+     * Initialize and set View components
+     * Unpack intent data
+     * Set up onButtonClick listener to notify ViewModel to start Service
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,21 +81,27 @@ public class PetDetailActivity extends AppCompatActivity {
         tvMeetMe.setText("Hi, I'm " + name + ". Nice to meet you!");
         tvLongDescription.setText(longDesc);
 
+
+        this.requestPermissions(new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }, 1);
+
         btnPromise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Test", "IN PROMISE BUTTON");
-                //serviceViewModel = new ServiceViewModel(getApplication());
-                //serviceViewModel.initService();
+                serviceViewModel = new ServiceViewModel(getApplication());
+                serviceViewModel.initService();
 
             }
         });
-
-
-
-
     }
 
+    /**
+     * Format the size variable for the UI
+     * @param size
+     * @return
+     */
     public String formatSize(String size){
         switch(size){
             case "S":
@@ -98,7 +120,6 @@ public class PetDetailActivity extends AppCompatActivity {
                 size = "Extra Large";
                 break;
         }
-
         return size;
     }
 }

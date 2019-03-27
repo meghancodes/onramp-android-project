@@ -26,6 +26,14 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         this.application = application;
     }
 
+    /**
+     * Send user search parameters to the Model
+     * @param pet
+     * @param gender
+     * @param size
+     * @param age
+     * @return
+     */
     public boolean onSearchButtonPressed(String pet, String gender, String size, String age){
         HashMap<String, String> searchParams = new HashMap<>();
 
@@ -50,12 +58,19 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
 
         return petQuery.parse();
     }
-    
+
+    /**
+     * Set up results item to be observed by MainActivity
+     * @return
+     */
     public LiveData<List<PetObject>> getPetObjects(){
         return petQuery.results;
     }
 
-
+    /**
+     * Expose pet options for the spinner
+     * @return
+     */
     public List<String> exposePet(){
         List<String> pet = new ArrayList<>();
         pet.add("Select a pet");
@@ -69,6 +84,10 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         return pet;
     }
 
+    /**
+     * Expose gender options for the spinner
+     * @return
+     */
     public List<String> exposeGender(){
         List<String> gender = new ArrayList<>();
         gender.add("Select a gender");
@@ -78,6 +97,10 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         return gender;
     }
 
+    /**
+     * Expose size options for the spinner
+     * @return
+     */
     public List<String> exposeSize(){
         List<String> size = new ArrayList<>();
         size.add("Select a size");
@@ -89,6 +112,10 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         return size;
     }
 
+    /**
+     * Expose age options for the spinner
+     * @return
+     */
     public List<String> exposeAge(){
         List<String> age = new ArrayList<>();
         age.add("Select an age");
@@ -100,6 +127,11 @@ public class PetDataViewModel extends AndroidViewModel implements LifecycleObser
         return age;
     }
 
+    /**
+     * Format the size
+     * @param size
+     * @return
+     */
     public String formatSize(String size){
         if(size.equals("Extra Large")){
             size = "XL";

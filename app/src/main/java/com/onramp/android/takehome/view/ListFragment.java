@@ -39,6 +39,10 @@ public class ListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Connect the recycler view to the fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

@@ -15,6 +15,9 @@ public class ServiceViewModel extends AndroidViewModel {
         this.application = application;
     }
 
+    /**
+     * Start the service
+     */
     public void initService(){
         serviceManager = new ServiceManager(application);
     }

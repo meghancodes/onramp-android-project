@@ -30,6 +30,11 @@ public class SearchResultsActivity extends AppCompatActivity implements PetAdapt
     public Fragment listFragment;
     public List<PetObject> petObjects;
 
+    /**
+     * Obtain results data from MainActivity
+     * Show the fragment
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,10 @@ public class SearchResultsActivity extends AppCompatActivity implements PetAdapt
 
     }
 
+    /**
+     * Pass the clicked pet's data to PetDetailActivity and start Activity
+     * @param index
+     */
     @Override
     public void onItemClicked(int index) {
         //pass the clicked item to the next activity

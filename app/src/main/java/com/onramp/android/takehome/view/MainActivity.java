@@ -1,8 +1,16 @@
 package com.onramp.android.takehome.view;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.DownloadManager;
 import android.arch.lifecycle.Observer;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,10 +32,21 @@ import com.google.gson.reflect.TypeToken;
 import com.onramp.android.takehome.R;
 import com.onramp.android.takehome.model.pets.PetObject;
 import com.onramp.android.takehome.viewmodel.PetDataViewModel;
+import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -36,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinnerSize;
     private Spinner spinnerAge;
     private Button btnSearch;
-    private ImageView ivFeaturedPet;
     private final PetDataViewModel petDataViewModel = new PetDataViewModel(getApplication());
     private String selectedPet;
     private String selectedGender;
@@ -45,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     List<PetObject> petObjects;
 
 
+    /**
+     * Initialize Wiew components and set up onButtonClick listener
+     * to pass search filters to the ViewModel
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerSize = (Spinner) findViewById(R.id.spinnerSize);
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         btnSearch = (Button) findViewById(R.id.btnSearch);
-        ivFeaturedPet = (ImageView) findViewById(R.id.ivFeaturedPet);
 
         //initialize spinners
         initSpinners();
@@ -74,14 +96,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    //Pass selected items to the viewmodel
-                    //PetDataViewModel pd = new PetDataViewModel(getApplication());
-                    //pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge);
-
+                    //Pass selected items to the ViewModel
                     if(pd.onSearchButtonPressed(selectedPet, selectedGender, selectedSize, selectedAge)){
-                        //pass an intent with pd object to the next activity
-                        Log.d("Here? ", "Result: true!");
-
+                        //set an observer to observe for result object
                         pd.getPetObjects().observe(MainActivity.this, new Observer<List<PetObject>>() {
                             @Override
                             public void onChanged(@Nullable List<PetObject> petObjects) {
@@ -89,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                         });
 
-                        //prep viewmodel instance to send
+                        //send result object to SearchResultsActivity
                         Gson gson = new Gson();
                         Type PetObjectType = new TypeToken<List<PetObject>>(){}.getType();
 
@@ -110,7 +127,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
-
+    /**
+     * Initialize the spinners with data from ViewModel
+     */
     public void initSpinners(){
         //SpinnerPet
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(MainActivity.this,
@@ -149,6 +168,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    /**
+     * Spinner listener
+     * @param adapterView
+     * @param view
+     * @param i
+     * @param l
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         int id = adapterView.getId();

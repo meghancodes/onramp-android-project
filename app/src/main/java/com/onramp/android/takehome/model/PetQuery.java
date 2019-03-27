@@ -22,7 +22,11 @@ public class PetQuery {
     private List<PetObject> resultPets = new ArrayList<>();
     public MutableLiveData<List<PetObject>> results = new MutableLiveData<>();
 
-    //query file for data
+    /**
+     * Load JSON file into a PetObjects type
+     * @param context
+     * @param searchParameters
+     */
     public PetQuery(Context context, HashMap<String, String> searchParameters){
         this.context = context;
         this.searchParameters = searchParameters;
@@ -50,6 +54,10 @@ public class PetQuery {
 
     }
 
+    /**
+     * Calls each parse method
+     * @return boolean
+     */
     public boolean parse(){
 
         parseAnimal();
@@ -69,6 +77,9 @@ public class PetQuery {
 
     }
 
+    /**
+     * Parses results based on animal type
+     */
     public void parseAnimal(){
         for(int i = 0; i < petObjects.getObjects().size(); i++){
             if(petObjects.getObjects().get(i).getAnimal().equals(searchParameters.get("animal"))){
@@ -77,6 +88,9 @@ public class PetQuery {
         }
     }
 
+    /**
+     * Parses results based on pet gender
+     */
     public void parseGender(){
         for(int i = 0; i < resultPets.size(); i++){
             if(!resultPets.get(i).getSex().equals(searchParameters.get("gender"))){
@@ -85,6 +99,9 @@ public class PetQuery {
         }
     }
 
+    /**
+     * Parses results based on pet size
+     */
     public void parseSize(){
         for(int i = 0; i < resultPets.size(); i++){
             if(!resultPets.get(i).getSize().equals(searchParameters.get("size"))){
@@ -93,6 +110,9 @@ public class PetQuery {
         }
     }
 
+    /**
+     * Parses results based on pet age
+     */
     public void parseAge() {
         for (int i = 0; i < resultPets.size(); i++) {
             if (!resultPets.get(i).getAge().equals(searchParameters.get("age"))) {
