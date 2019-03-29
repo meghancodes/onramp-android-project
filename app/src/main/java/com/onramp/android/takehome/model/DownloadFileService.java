@@ -1,5 +1,6 @@
 package com.onramp.android.takehome.model;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
@@ -11,6 +12,9 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.onramp.android.takehome.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,5 +60,7 @@ public class DownloadFileService extends IntentService {
                 .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
         DownloadManager downloadManager= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         downloadID = downloadManager.enqueue(request);// enqueue puts the download request in the queue.
+
+        Log.d("Inside service", "But did the file download?");
     }
 }

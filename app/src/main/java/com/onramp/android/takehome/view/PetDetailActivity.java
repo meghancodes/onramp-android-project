@@ -3,7 +3,10 @@ package com.onramp.android.takehome.view;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -81,7 +84,6 @@ public class PetDetailActivity extends AppCompatActivity {
         tvMeetMe.setText("Hi, I'm " + name + ". Nice to meet you!");
         tvLongDescription.setText(longDesc);
 
-
         this.requestPermissions(new String[]{
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -90,11 +92,35 @@ public class PetDetailActivity extends AppCompatActivity {
         btnPromise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serviceViewModel = new ServiceViewModel(getApplication());
-                serviceViewModel.initService();
+
+                int check = ActivityCompat.checkSelfPermission(getApplicationContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (check == PackageManager.PERMISSION_GRANTED) {
+                    serviceViewModel = new ServiceViewModel(getApplication());
+                    serviceViewModel.initService();
+                } else {
+                    requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                }
+
 
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+                    //Start your service here
+                    serviceViewModel = new ServiceViewModel(getApplication());
+                    serviceViewModel.initService();
+                }
+            }
+        }
     }
 
     /**
