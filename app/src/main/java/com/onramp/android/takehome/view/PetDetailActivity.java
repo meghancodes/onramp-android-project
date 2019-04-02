@@ -74,12 +74,8 @@ public class PetDetailActivity extends AppCompatActivity {
         String breed = getIntent().getStringExtra("breed");
         String age = getIntent().getStringExtra("age");
 
-        //meet me
-
-
         //long description
         String longDesc = getIntent().getStringExtra("description");
-
 
         Picasso.get().load(image).into(ivPet);
         tvName.setText(name);
