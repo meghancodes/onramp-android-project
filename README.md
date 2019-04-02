@@ -41,15 +41,23 @@ This structure makes the app reusable. Since the Model, View and ViewModel are s
 
 Upon running the app, MainActivity is the first component to execute. Within this activity, the app's initial user interface is built.
 
+![](App%20Screenshots/MainActivity.PNG)
+
 The user can click on each of the four dropdown arrows to select filters for pet type, gender, size and age. After specifying filters, the user can click on the "Search" Button to begin the search.
 
 If there are no pets matching the search query, a Snackbar is displayed notifying the user and prompting for different search parameters.
 
+![](App%20Screenshots/NoResults.PNG)
+
 If there are pets matching the search query, the application navigates to SearchResultsActivity. This Activity contains a Fragment which displays a vertical RecyclerView list of pet results. Each item in the list is displayed on a Card for improved clarity.
+
+![](App%20Screenshots/SearchResultsActivity.PNG)
 
 Here, the user can click on a list item to view more details about a specific furry angel of interest. 
 
 Details include the pet's image, name, gender, breed, size, age and a long description.
+
+![](App%20Screenshots/PetDetailActivity.PNG)
 
 If the user clicks on the "Give A Pet Promise" Button, a Pet Promise Certificate file will be downloaded to their phone for them to fill out and give to someone.
 
