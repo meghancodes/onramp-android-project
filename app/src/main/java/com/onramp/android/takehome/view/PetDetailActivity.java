@@ -2,10 +2,13 @@ package com.onramp.android.takehome.view;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -84,19 +87,24 @@ public class PetDetailActivity extends AppCompatActivity {
         tvMeetMe.setText("Hi, I'm " + name + ". Nice to meet you!");
         tvLongDescription.setText(longDesc);
 
-        this.requestPermissions(new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        }, 1);
-
         btnPromise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final View saveView = view;
 
                 int check = ActivityCompat.checkSelfPermission(getApplicationContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if (check == PackageManager.PERMISSION_GRANTED) {
                     serviceViewModel = new ServiceViewModel(getApplication());
                     serviceViewModel.initService();
+
+                    //listen for download result from viewModel
+                    serviceViewModel.getDownloadResult().observe(PetDetailActivity.this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(@Nullable Boolean aBoolean) {
+                            Snackbar.make(saveView, "Download Complete!", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
                 } else {
                     requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                 }
@@ -115,7 +123,8 @@ public class PetDetailActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
-                    //Start your service here
+
+                    //tell the viewModel to start the service
                     serviceViewModel = new ServiceViewModel(getApplication());
                     serviceViewModel.initService();
                 }

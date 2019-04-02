@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Service;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.onramp.android.takehome.R;
+import com.onramp.android.takehome.view.MainActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,6 +63,30 @@ public class DownloadFileService extends IntentService {
         DownloadManager downloadManager= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         downloadID = downloadManager.enqueue(request);// enqueue puts the download request in the queue.
 
-        Log.d("Inside service", "But did the file download?");
+        //send broadcast
+        sendMyBroadCast();
+
+
     }
+
+    /**
+     * Send a broadcast to be received by ServiceManager
+     */
+    private void sendMyBroadCast()
+    {
+        try
+        {
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction("Download Complete");
+
+            sendBroadcast(broadcastIntent);
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+
 }
