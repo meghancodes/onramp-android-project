@@ -10,7 +10,7 @@ In addition, the application provides a downloadable link to a Pet Promise Certi
 
 ## Description and Details 🔎
 
-Furry Angel Finder is comprised of three activities, one fragment, one service and various UI components, including Buttons, Cards, a List, a Divider and a Snackbar. The application is built in accordance with the MVVM architectural pattern.
+Furry Angel Finder is comprised of three activities, one fragment, one service, one broadcast receiver and various UI components, including Buttons, Cards, a List, Dividers and Snackbars. The application is built in accordance with the MVVM architectural pattern.
 
 #### Architectural Overview
 
@@ -20,7 +20,7 @@ The three app Activities are MainActivity, SearchResultsActivity and PetDetailAc
 
 - SearchResultsActivity displays a list of search results. It passes individual result items to PetDetailActivity.
 
-- PetDetailActivity displays details about the selected pet. Details include the pet's image, name, gender, breed, size, age and a long description. PetDetailActivity also displays a button, which when pressed, executes the methods necessary to start the application's service.
+- PetDetailActivity displays details about the selected pet. PetDetailActivity also displays a button, which when pressed, executes the methods necessary to start the application's service.
 
 - DownloadFileService downloads a file from the internet using a URL.
 
@@ -30,12 +30,11 @@ The application's design adheres to the MVVM (Model, View, ViewModel) architectu
 
 When the app first runs, MainActivity executes. It sends the user's pet selection criteria to the ViewModel, which passes it along to the Model. With this data, the Model obtains the results and ties them to a MutableLiveData observer object and sets the results of the query. 
 
-Next, the ViewModel observes this update, receives the result and updates its own LiveData observer object. The View observes this object and passes it along with an Intent to start the second Activity, SearchResultsActivity.
+Next, the ViewModel observes this update, receives the result and updates its own LiveData observer object. The View then observes this object and passes it along with an Intent to start the second Activity, SearchResultsActivity.
 
-In this activity, the search results object is carefully processed and made visible to the user in the form of a RecyclerView list on a Fragment. If a user clicks on one of the resulting pets, an Intent is passed to the third Activity, PetDetailActivity. In this activity, if the user clicks on the "Give A Pet Promise" Button, the ViewModel tells the Model to start the Service.
-This Service, DownloadFileService, downloads a Pet Promise Certificate from the internet to the user's phone.     
+In this activity, the search results object is carefully processed and made visible to the user in the form of a RecyclerView list on a Fragment. If a user clicks on one of the resulting pets, an Intent is passed to the third Activity, PetDetailActivity. 
 
-This structure makes the app reusable. Since the Model, View and ViewModel are separate from each other, the developer can easily pass UI events from the View to the ViewModel to the Model, add necessary business logic to the Model, and create observer variables to communicate the data and make UI updates.   
+In this activity, if the user clicks on the "Give A Pet Promise" Button, the View communicates with the ViewModel, which  tells the Model to start the Service. This Service, named DownloadFileService, downloads a Pet Promise Certificate from the internet to the user's phone.      
 
 #### Overall User Flow
 
@@ -59,6 +58,6 @@ Details include the pet's image, name, gender, breed, size, age and a long descr
 
 ![](App%20Screenshots/PetDetailActivity.PNG)
 
-If the user clicks on the "Give A Pet Promise" Button, a Pet Promise Certificate file will be downloaded to their phone for them to fill out and give to someone.
+If the user clicks on the "Give A Pet Promise" Button, a Pet Promise Certificate file will be downloaded to the user's phone to be filled out and given to someone.
 
 
